@@ -16,7 +16,10 @@
             <p class="text-xs text-gray-500 leading-none mt-0.5">Pie-Cut Steel Tube Calculator</p>
           </div>
         </div>
-        <div class="text-xs text-gray-600">All internal values in mm &amp; degrees</div>
+        <div class="flex items-center gap-4">
+          <span class="text-xs text-amber-500/70" title="This tool has been VibeCoded — verify results before fabrication. Use at your own risk.">⚠ This tool has been VibeCoded · use at your own risk</span>
+          <span class="text-xs text-gray-600">All internal values in mm &amp; degrees</span>
+        </div>
       </div>
     </header>
 
@@ -77,11 +80,107 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-gray-800 mt-auto">
-      <div class="max-w-screen-2xl mx-auto px-6 py-3 text-xs text-gray-700">
-        Pie-cut geometry · All calculations follow: φ = θ / (2n) · L = R × θ_rad / n · Δ = (D/2) × tan(φ)
+    <!-- Bottom disclaimer + formula reference -->
+    <footer class="border-t border-gray-800 mt-auto text-xs font-mono">
+
+      <!-- Formula reference -->
+      <div class="border-b border-gray-800/60 bg-gray-900/40">
+        <div class="max-w-screen-2xl mx-auto px-6 py-5">
+          <h2 class="text-gray-400 font-semibold mb-3 tracking-wide uppercase text-[10px]">Geometry Reference — Pie-Cut Tube Bend</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-4 text-gray-500">
+
+            <div>
+              <p class="text-gray-400 mb-1">Cut angle per joint (φ)</p>
+              <p class="text-indigo-400/80 bg-gray-950/60 px-2 py-1 rounded">φ = θ / (2 × n)</p>
+              <p class="mt-1 text-gray-600">Each cut face is tilted φ degrees from a square cut. Two mating faces together recover the full bend increment θ/n.</p>
+            </div>
+
+            <div>
+              <p class="text-gray-400 mb-1">Segment arc lengths</p>
+              <p class="text-indigo-400/80 bg-gray-950/60 px-2 py-1 rounded">L = R × (θ_rad / n)</p>
+              <p class="text-indigo-400/80 bg-gray-950/60 px-2 py-1 rounded mt-1">L_outer = (R + D/2) × (θ_rad / n)</p>
+              <p class="text-indigo-400/80 bg-gray-950/60 px-2 py-1 rounded mt-1">L_inner = (R − D/2) × (θ_rad / n)</p>
+              <p class="mt-1 text-gray-600">Arc length along the centerline, outer wall, and inner wall of each segment.</p>
+            </div>
+
+            <div>
+              <p class="text-gray-400 mb-1">Long / short side offset (Δ)</p>
+              <p class="text-indigo-400/80 bg-gray-950/60 px-2 py-1 rounded">Δ = (D/2) × tan(φ)</p>
+              <p class="text-indigo-400/80 bg-gray-950/60 px-2 py-1 rounded mt-1">Long side = L_center + Δ</p>
+              <p class="text-indigo-400/80 bg-gray-950/60 px-2 py-1 rounded mt-1">Short side = L_center − Δ</p>
+              <p class="mt-1 text-gray-600">The angled cut produces a trapezoidal cross-section. Δ is the half-difference between the two parallel faces.</p>
+            </div>
+
+            <div>
+              <p class="text-gray-400 mb-1">Inputs</p>
+              <ul class="text-gray-600 space-y-0.5">
+                <li><span class="text-gray-500">R</span> — Centerline bend radius (mm)</li>
+                <li><span class="text-gray-500">D</span> — Tube outer diameter (mm)</li>
+                <li><span class="text-gray-500">t</span> — Wall thickness (mm)</li>
+                <li><span class="text-gray-500">θ</span> — Total bend angle (degrees)</li>
+                <li><span class="text-gray-500">n</span> — Number of cut segments (≥ 2)</li>
+              </ul>
+            </div>
+
+            <div>
+              <p class="text-gray-400 mb-1">Constraints</p>
+              <ul class="text-gray-600 space-y-0.5">
+                <li>R &gt; D/2 — prevents negative inner radius</li>
+                <li>t &lt; D/2 — wall must be thinner than tube radius</li>
+                <li>0° &lt; θ ≤ 180°</li>
+                <li>n ≥ 2, integer</li>
+              </ul>
+            </div>
+
+            <div>
+              <p class="text-gray-400 mb-1">Number of cuts</p>
+              <p class="text-indigo-400/80 bg-gray-950/60 px-2 py-1 rounded">cuts = n + 1</p>
+              <p class="mt-1 text-gray-600">Two end cuts plus (n − 1) internal cuts. Each internal cut produces the mating angled faces of two adjacent segments.</p>
+            </div>
+
+          </div>
+        </div>
       </div>
+
+      <!-- Legal disclaimer -->
+      <div class="border-b border-gray-800/60 bg-gray-950">
+        <div class="max-w-screen-2xl mx-auto px-6 py-4 text-gray-600 leading-relaxed">
+          <p class="text-gray-500 font-semibold mb-1">Disclaimer</p>
+          <p>
+            This tool was developed with the assistance of artificial intelligence and is provided for informational and reference purposes only.
+            While the underlying geometry and formulas follow standard pie-cut fabrication practice, no warranty — express or implied — is made
+            regarding the accuracy, completeness, or fitness for a particular purpose of the results produced.
+            All dimensions, angles, and cut lengths must be independently verified by a qualified professional before use in fabrication.
+            The authors accept no liability for any loss, injury, or damage arising from reliance on this tool.
+            <strong class="text-gray-500">Use at your own risk.</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- MIT License -->
+      <div class="bg-gray-950">
+        <div class="max-w-screen-2xl mx-auto px-6 py-4 text-gray-600 leading-relaxed">
+          <p class="text-gray-500 font-semibold mb-2">MIT License</p>
+          <p class="mb-2">Copyright &copy; 2026 Inglette Tool Contributors</p>
+          <p class="mb-2">
+            Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+            documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+            the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+            and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+          </p>
+          <p class="mb-2">
+            The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+          </p>
+          <p class="text-gray-700 uppercase tracking-wide text-[10px] leading-relaxed">
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+            THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+            CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+            DEALINGS IN THE SOFTWARE.
+          </p>
+        </div>
+      </div>
+
     </footer>
 
   </div>
