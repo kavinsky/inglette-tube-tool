@@ -50,8 +50,6 @@ export function usePieCut(R, D, t, theta, n) {
 
     const R_outer = R.value + D.value / 2
     const R_inner = R.value - D.value / 2
-    const R_id = R.value - D.value / 2 + t.value  // inner bore at outer curve
-    const R_od = R.value + D.value / 2 - t.value  // inner bore at inner curve (unused currently)
 
     const L_outer = R_outer * segAngleRad
     const L_inner = R_inner * segAngleRad

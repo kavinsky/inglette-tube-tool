@@ -2,16 +2,17 @@
   <div class="flex flex-col gap-3">
     <div class="flex items-center justify-between">
       <h2 class="text-xs uppercase tracking-widest text-gray-400 font-semibold">Cut Template — Flat Segment Profile</h2>
-      <span v-if="isValid && segments.length" class="text-xs text-gray-500">
-        {{ segments.length }} identical segments · φ={{ phi.toFixed(2) }}°
+      <span v-if="totals" class="ml-auto text-gray-400 text-sm">
+        Total tube length: <span class="text-indigo-400">{{ fmtMm(totals.totalOuter) }} {{ unit }}</span>
       </span>
+  
     </div>
 
     <div
       ref="containerRef"
       class="relative w-full h-50 sm:h-75 bg-gray-900 border border-gray-700 rounded-xl overflow-hidden"
     >
-      <canvas ref="canvasRef" style="display: block; height: 100%;" />
+      <canvas ref="canvasRef" style="display: block; height: 100%;"></canvas>
       <div v-if="!isValid" class="absolute inset-0 flex items-center justify-center text-gray-600 text-sm pointer-events-none">
         Enter valid inputs to see cut templates
       </div>
@@ -22,17 +23,18 @@
       <span><span class="text-sky-400">▬</span> Inner edge (L_inner)</span>
       <span><span class="text-violet-400">↔</span> Gap between inner edges (2Δ = {{ fmtMm(segments[0]?.delta * 2) }} {{ unit }})</span>
       <span><span class="text-red-400">⟋</span> Cut faces (φ={{ phi.toFixed(1) }}°)</span>
+      
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
-
-const MM_PER_IN = 25.4
+import { useUnitFormat } from '../composables/useUnitFormat'
 
 const props = defineProps({
   segments: { type: Array, default: () => [] },
+  totals: { type: Object, default: null },
   D: { type: Number, default: 0 },
   phi: { type: Number, default: 0 },
   isValid: { type: Boolean, default: false },
@@ -43,10 +45,7 @@ const canvasRef = ref(null)
 const containerRef = ref(null)
 let resizeObserver = null
 
-const fmtMm = (v) => {
-  if (v == null || isNaN(v)) return '0'
-  return props.unit === 'in' ? (v / MM_PER_IN).toFixed(3) : v.toFixed(1)
-}
+const { fmt: fmtMm } = useUnitFormat(() => props.unit)
 
 function drawArrow(ctx, x1, y1, x2, y2, color) {
   const headLen = 5
@@ -82,7 +81,7 @@ function draw() {
 
   const seg = props.segments[0]
   const n = props.segments.length
-  const { L_outer, L_inner, L_center, delta } = seg
+  const { L_outer, L_inner, delta } = seg
   const D = props.D
 
   const PADDING_X = 48
@@ -99,7 +98,6 @@ function draw() {
   const scale = Math.min(scaleX, scaleY, 5)
 
   const trapW_outer = L_outer * scale
-  const trapW_inner = L_inner * scale
   const trapH = D * scale
   const dPx = delta * scale    // offset per side (each side of cut face)
   const gapPx = 2 * dPx         // gap between adjacent inner edges at each joint

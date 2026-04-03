@@ -5,7 +5,7 @@
       <span v-if="isValid" class="text-xs text-indigo-400">{{ phi.toFixed(2) }}° cut angle · {{ n }} segments</span>
     </div>
     <div ref="containerRef" class="relative w-full h-[220px] sm:h-[360px] bg-gray-900 border border-gray-700 rounded-xl overflow-hidden">
-      <canvas ref="canvasRef" class="absolute inset-0" />
+      <canvas ref="canvasRef" class="absolute inset-0"></canvas>
       <div v-if="!isValid" class="absolute inset-0 flex items-center justify-center text-gray-600 text-sm">
         Enter valid inputs to see visualization
       </div>

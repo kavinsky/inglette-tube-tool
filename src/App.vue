@@ -18,16 +18,15 @@
         </div>
         <div class="flex items-center gap-3">
           <span class="hidden sm:inline text-xs text-amber-500/70" title="This tool has been VibeCoded — verify results before fabrication. Use at your own risk.">⚠ This tool has been VibeCoded · use at your own risk</span>
-          <span class="hidden lg:inline text-xs text-gray-600">All internal values in mm &amp; degrees</span>
           <!-- Hamburger: visible on mobile only -->
           <button
-            @click="sidebarOpen = !sidebarOpen"
             class="lg:hidden flex flex-col justify-center gap-1.5 w-8 h-8 p-1.5 rounded-md text-gray-400 hover:text-gray-100 hover:bg-gray-800 transition-colors"
             :aria-label="sidebarOpen ? 'Hide inputs' : 'Show inputs'"
+            @click="sidebarOpen = !sidebarOpen"
           >
-            <span class="block h-px w-full bg-current rounded" />
-            <span class="block h-px w-full bg-current rounded" />
-            <span class="block h-px w-full bg-current rounded" />
+            <span class="block h-px w-full bg-current rounded"></span>
+            <span class="block h-px w-full bg-current rounded"></span>
+            <span class="block h-px w-full bg-current rounded"></span>
           </button>
         </div>
       </div>
@@ -39,10 +38,10 @@
       <!-- Left sidebar: inputs (hidden on mobile until toggle) -->
       <div :class="[sidebarOpen ? 'block' : 'hidden', 'lg:block', 'shrink-0']">
         <InputPanel
-          :modelValue="inputs"
-          @update:modelValue="v => Object.assign(inputs, v)"
           v-model:unit="unit"
+          :model-value="inputs"
           :error="validationError"
+          @update:model-value="v => Object.assign(inputs, v)"
         />
       </div>
 
@@ -61,6 +60,7 @@
           />
           <CutTemplateCanvas
             :segments="segments"
+            :totals="totals"
             :D="inputs.D"
             :phi="phi"
             :is-valid="isValid"

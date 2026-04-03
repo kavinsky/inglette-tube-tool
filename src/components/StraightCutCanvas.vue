@@ -4,15 +4,17 @@
       <h2 class="text-xs uppercase tracking-widest text-gray-400 font-semibold">
         Straight Tube — <span class="text-indigo-400">Sequential Cut Plan</span>
       </h2>
-      <span v-if="isValid && segments.length" class="text-xs text-gray-500">
-        {{ segments.length + 1 }} cuts · total length {{ fmtVal(totals.totalCenterline) }} {{ unit }}
+
+      <span v-if="isValid" class="ml-auto text-gray-400 text-sm">
+        Total tube length: <span class="text-indigo-400">{{ fmtVal(totals.totalCenterline) }} {{ unit }}</span>
       </span>
+  
     </div>
     <div
       ref="containerRef"
       class="relative w-full h-37.5 sm:h-55 bg-gray-900 border border-gray-700 rounded-xl overflow-hidden"
     >
-      <canvas ref="canvasRef" style="display:block; height:100%;" />
+      <canvas ref="canvasRef" style="display:block; height:100%;"></canvas>
       <div v-if="!isValid" class="absolute inset-0 flex items-center justify-center text-gray-600 text-sm pointer-events-none">
         Enter valid inputs to see cut plan
       </div>
@@ -45,8 +47,7 @@
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
-
-const MM_PER_IN = 25.4
+import { useUnitFormat } from '../composables/useUnitFormat'
 
 const props = defineProps({
   segments: { type: Array, default: () => [] },
@@ -61,7 +62,7 @@ const canvasRef = ref(null)
 const containerRef = ref(null)
 let resizeObserver = null
 
-const fmtVal = (v) => props.unit === 'in' ? (v / MM_PER_IN).toFixed(3) : v.toFixed(1)
+const { fmt: fmtVal } = useUnitFormat(() => props.unit)
 
 /**
  * Computes the x-coordinate of each cut on the BOTTOM edge (outer curve side)
@@ -118,9 +119,9 @@ function draw() {
   ctx.clearRect(0, 0, W, H)
   if (!props.isValid || !props.segments.length) return
 
-  const { D, segments, phi } = props
+  const { D, segments } = props
   const n = segments.length
-  const { L_outer, L_inner, L_center, delta } = segments[0]
+  const { L_outer, L_inner, L_center } = segments[0]
 
   const { cuts } = computeCutPositions(L_outer, L_inner, n)
 

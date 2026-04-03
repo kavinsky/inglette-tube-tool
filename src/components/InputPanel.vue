@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="border-t border-gray-700" />
+    <div class="border-t border-gray-700"></div>
 
     <!-- Inputs -->
     <div class="flex flex-col gap-4">
@@ -102,8 +102,7 @@
 
 <script setup>
 import { defineComponent, h } from 'vue'
-
-const MM_PER_IN = 25.4
+import { useUnitFormat } from '../composables/useUnitFormat'
 
 const props = defineProps({
   modelValue: { type: Object, required: true },
@@ -112,18 +111,17 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue', 'update:unit'])
 
-const toDisplay = (mm) => props.unit === 'in' ? +(mm / MM_PER_IN).toFixed(4) : +mm.toFixed(2)
-const fromDisplay = (v) => props.unit === 'in' ? +((Number(v)) * MM_PER_IN).toFixed(4) : Number(v)
+const { toDisplay, fromDisplay } = useUnitFormat(() => props.unit)
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max)
 
 // Inline sub-component for consistent field layout
 const InputField = defineComponent({
   props: {
-    label: String,
-    unit: String,
-    value: Number,
-    min: Number,
-    step: Number,
+    label: { type: String, default: '' },
+    unit: { type: String, default: 'mm' },
+    value: { type: Number, default: 0 },
+    min: { type: Number, default: 0 },
+    step: { type: Number, default: 1 },
   },
   emits: ['update'],
   setup(p, { emit: emitField }) {
