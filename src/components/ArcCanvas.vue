@@ -4,7 +4,7 @@
       <h2 class="text-xs uppercase tracking-widest text-gray-400 font-semibold">Final Preview — <span class="text-indigo-400">Assembled &amp; Welded</span></h2>
       <span v-if="isValid" class="text-xs text-indigo-400">{{ phi.toFixed(2) }}° cut angle · {{ n }} segments</span>
     </div>
-    <div ref="containerRef" class="relative w-full bg-gray-900 border border-gray-700 rounded-xl overflow-hidden" style="height: 360px;">
+    <div ref="containerRef" class="relative w-full h-[220px] sm:h-[360px] bg-gray-900 border border-gray-700 rounded-xl overflow-hidden">
       <canvas ref="canvasRef" class="absolute inset-0" />
       <div v-if="!isValid" class="absolute inset-0 flex items-center justify-center text-gray-600 text-sm">
         Enter valid inputs to see visualization

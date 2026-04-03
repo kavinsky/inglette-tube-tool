@@ -3,7 +3,7 @@
 
     <!-- Header -->
     <header class="border-b border-gray-800 bg-gray-950/80 backdrop-blur sticky top-0 z-10">
-      <div class="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <!-- Icon -->
           <svg class="w-7 h-7 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -16,24 +16,35 @@
             <p class="text-xs text-gray-500 leading-none mt-0.5">Pie-Cut Steel Tube Calculator</p>
           </div>
         </div>
-        <div class="flex items-center gap-4">
-          <span class="text-xs text-amber-500/70" title="This tool has been VibeCoded — verify results before fabrication. Use at your own risk.">⚠ This tool has been VibeCoded · use at your own risk</span>
-          <span class="text-xs text-gray-600">All internal values in mm &amp; degrees</span>
+        <div class="flex items-center gap-3">
+          <span class="hidden sm:inline text-xs text-amber-500/70" title="This tool has been VibeCoded — verify results before fabrication. Use at your own risk.">⚠ This tool has been VibeCoded · use at your own risk</span>
+          <span class="hidden lg:inline text-xs text-gray-600">All internal values in mm &amp; degrees</span>
+          <!-- Hamburger: visible on mobile only -->
+          <button
+            @click="sidebarOpen = !sidebarOpen"
+            class="lg:hidden flex flex-col justify-center gap-1.5 w-8 h-8 p-1.5 rounded-md text-gray-400 hover:text-gray-100 hover:bg-gray-800 transition-colors"
+            :aria-label="sidebarOpen ? 'Hide inputs' : 'Show inputs'"
+          >
+            <span class="block h-px w-full bg-current rounded" />
+            <span class="block h-px w-full bg-current rounded" />
+            <span class="block h-px w-full bg-current rounded" />
+          </button>
         </div>
       </div>
     </header>
 
     <!-- Main layout -->
-    <main class="max-w-screen-2xl mx-auto px-6 py-6 flex gap-6 w-full flex-1">
+    <main class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-6 w-full flex-1">
 
-      <!-- Left sidebar: inputs -->
-      <InputPanel
-        :modelValue="inputs"
-        @update:modelValue="v => Object.assign(inputs, v)"
-        v-model:unit="unit"
-        :error="validationError"
-        class="shrink-0"
-      />
+      <!-- Left sidebar: inputs (hidden on mobile until toggle) -->
+      <div :class="[sidebarOpen ? 'block' : 'hidden', 'lg:block', 'shrink-0']">
+        <InputPanel
+          :modelValue="inputs"
+          @update:modelValue="v => Object.assign(inputs, v)"
+          v-model:unit="unit"
+          :error="validationError"
+        />
+      </div>
 
       <!-- Right content -->
       <div class="flex flex-col gap-6 flex-1 min-w-0">
@@ -205,6 +216,7 @@ const inputs = reactive({
 })
 
 const unit = ref('mm')
+const sidebarOpen = ref(false)
 
 // Wrap reactive inputs as individual refs for the composable
 import { toRef } from 'vue'

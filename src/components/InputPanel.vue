@@ -1,5 +1,5 @@
 <template>
-  <aside class="flex flex-col gap-6 p-5 bg-gray-900 border border-gray-700 rounded-xl min-w-65">
+  <aside class="flex flex-col gap-6 p-5 bg-gray-900 border border-gray-700 rounded-xl w-full lg:min-w-65">
 
     <!-- Unit Toggle -->
     <div class="flex items-center justify-between">

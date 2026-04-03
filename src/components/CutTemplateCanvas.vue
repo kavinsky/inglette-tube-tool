@@ -9,8 +9,7 @@
 
     <div
       ref="containerRef"
-      class="relative w-full bg-gray-900 border border-gray-700 rounded-xl overflow-x-auto overflow-y-hidden"
-      style="height: 300px;"
+      class="relative w-full h-50 sm:h-75 bg-gray-900 border border-gray-700 rounded-xl overflow-hidden"
     >
       <canvas ref="canvasRef" style="display: block; height: 100%;" />
       <div v-if="!isValid" class="absolute inset-0 flex items-center justify-center text-gray-600 text-sm pointer-events-none">
@@ -69,6 +68,12 @@ function drawArrow(ctx, x1, y1, x2, y2, color) {
 function draw() {
   const canvas = canvasRef.value
   if (!canvas) return
+  // Always sync canvas dimensions to the container so content never overflows
+  const container = containerRef.value
+  if (container) {
+    canvas.width  = container.clientWidth
+    canvas.height = container.clientHeight
+  }
   const ctx = canvas.getContext('2d')
 
   ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -98,14 +103,6 @@ function draw() {
   const trapH = D * scale
   const dPx = delta * scale    // offset per side (each side of cut face)
   const gapPx = 2 * dPx         // gap between adjacent inner edges at each joint
-
-  // Expand canvas width if segments need more room than the container
-  const requiredW = Math.ceil(PADDING_X * 2 + n * trapW_outer)
-  const targetW = Math.max(requiredW, containerRef.value?.clientWidth ?? 400)
-  if (canvas.width !== targetW) {
-    canvas.width = targetW
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-  }
 
   const startY = PADDING_TOP    // top of trapezoid
   const FONT = 10
